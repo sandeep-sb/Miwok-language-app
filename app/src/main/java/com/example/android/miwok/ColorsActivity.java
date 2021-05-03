@@ -29,7 +29,7 @@ public class ColorsActivity extends AppCompatActivity {
         words.add(new Word("chiwiiṭә", "mustard yellow", R.drawable.color_mustard_yellow));
 
         //Custom ArrayAdapter
-        WordAdapter adapter = new WordAdapter(this, words);
+        WordAdapter adapter = new WordAdapter(this, words, R.color.category_colors);
         ListView listView = (ListView) findViewById(R.id.list);
         listView.setAdapter(adapter);
     }

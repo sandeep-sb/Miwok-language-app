@@ -8,7 +8,6 @@ public class Word {
     //String variable for default translation of a word
     private String mDefaultTranslation;
 
-
     private int NO_IMAGE_PROVIDED = -1;
 
     //Integer variable for storing image resource id

@@ -6,10 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import org.w3c.dom.Text;
 
@@ -19,8 +21,12 @@ import java.util.List;
 public class WordAdapter extends ArrayAdapter<Word> {
     private static final String TAG = "WordAdapter";
 
-    public WordAdapter(Context context, ArrayList<Word> objects) {
+    //Resource ID for background color for this list of words.
+    private final int mlistColor;
+
+    public WordAdapter(Context context, ArrayList<Word> objects, int listColor) {
         super(context, 0, objects);
+        mlistColor = listColor;
     }
 
     @NonNull
@@ -43,6 +49,10 @@ public class WordAdapter extends ArrayAdapter<Word> {
         //Populate the data into template View using data object
         tvMiwok.setText(word.getMiwokWord());
         tvDeault.setText(word.getDefaultWord());
+
+        View textContainer = listitemView.findViewById(R.id.text_layout);
+        int color = ContextCompat.getColor(getContext(), mlistColor);
+        textContainer.setBackgroundColor(color);
 
         //Lookup View for Image populate
         ImageView ivImage = (ImageView) listitemView.findViewById (R.id.image_View);
