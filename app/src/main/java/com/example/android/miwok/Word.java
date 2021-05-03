@@ -8,8 +8,11 @@ public class Word {
     //String variable for default translation of a word
     private String mDefaultTranslation;
 
+
+    private int NO_IMAGE_PROVIDED = -1;
+
     //Integer variable for storing image resource id
-    private int mImageResourceID;
+    private int mImageResourceID = NO_IMAGE_PROVIDED;
 
     //Construct a new Word with initial values for Miwok word and default word.
     public  Word(String miwokWord, String defaultWord){
@@ -39,5 +42,9 @@ public class Word {
     public int getImageResourceID(){
 
         return mImageResourceID;
+    }
+    //returns true if view has image
+    public boolean hasImage(){
+        return mImageResourceID != NO_IMAGE_PROVIDED;
     }
 }

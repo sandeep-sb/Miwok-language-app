@@ -47,8 +47,17 @@ public class WordAdapter extends ArrayAdapter<Word> {
         //Lookup View for Image populate
         ImageView ivImage = (ImageView) listitemView.findViewById (R.id.image_View);
 
+        if (word.hasImage()){
         //Populate the data into template View using data object
         ivImage.setImageResource(word.getImageResourceID());
+
+        //Set imageview visibile
+            ivImage.setVisibility(View.VISIBLE);
+        }
+        else{
+            //Set imageview gone
+            ivImage.setVisibility(View.GONE);
+        }
 
         //Return the completed view to render on the screen
         return listitemView;
