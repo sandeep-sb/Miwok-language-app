@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -40,8 +41,14 @@ public class WordAdapter extends ArrayAdapter<Word> {
         TextView tvDeault = (TextView) listitemView.findViewById(R.id.default_text_view);
 
         //Populate the data into template View using data object
-        tvMiwok.setText(word.getMiwoktWord());
+        tvMiwok.setText(word.getMiwokWord());
         tvDeault.setText(word.getDefaultWord());
+
+        //Lookup View for Image populate
+        ImageView ivImage = (ImageView) listitemView.findViewById (R.id.image_View);
+
+        //Populate the data into template View using data object
+        ivImage.setImageResource(word.getImageResourceID());
 
         //Return the completed view to render on the screen
         return listitemView;
