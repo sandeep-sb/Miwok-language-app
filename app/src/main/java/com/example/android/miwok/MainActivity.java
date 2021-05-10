@@ -37,45 +37,33 @@ public class MainActivity extends AppCompatActivity {
         //Find a view that shows the numbers category
         TextView numbers = (TextView) findViewById(R.id.numbers);
         //Set the Click Listeners on that view
-        numbers.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent numbersIntent = new Intent(MainActivity.this, NumbersActivity.class);
-                startActivity(numbersIntent);
-            }
+        numbers.setOnClickListener(view -> {
+            Intent numbersIntent = new Intent(MainActivity.this, NumbersActivity.class);
+            startActivity(numbersIntent);
         });
 
         //Find the view that shows the Family Members activity
         TextView familyMembers = (TextView) findViewById(R.id.family);
         //Set the Click Listeners on that view
-        familyMembers.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent numbersIntent = new Intent(MainActivity.this, FamilyMembersActivity.class);
-                startActivity(numbersIntent);
-            }
+        familyMembers.setOnClickListener(view -> {
+            Intent numbersIntent = new Intent(MainActivity.this, FamilyMembersActivity.class);
+            startActivity(numbersIntent);
         });
 
         //Find the view that shows the colors activity
         TextView colors = (TextView) findViewById(R.id.colors);
         //Set the Click Listener on that View
-        colors.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent numbersIntent = new Intent(MainActivity.this, ColorsActivity.class);
-                startActivity(numbersIntent);
-            }
+        colors.setOnClickListener(view -> {
+            Intent numbersIntent = new Intent(MainActivity.this, ColorsActivity.class);
+            startActivity(numbersIntent);
         });
 
         //Find the view that shows the phrases activity
         TextView phrases = (TextView) findViewById(R.id.phrases);
         //Set the Click Listener on that View
-        phrases.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent numbersIntent = new Intent(MainActivity.this, PhrasesActivity.class);
-                startActivity(numbersIntent);
-            }
+        phrases.setOnClickListener(view -> {
+            Intent numbersIntent = new Intent(MainActivity.this, PhrasesActivity.class);
+            startActivity(numbersIntent);
         });
 
     }
