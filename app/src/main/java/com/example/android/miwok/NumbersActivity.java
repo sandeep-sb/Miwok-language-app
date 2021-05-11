@@ -1,5 +1,8 @@
 package com.example.android.miwok;
 
+import android.content.Context;
+import android.media.AudioFocusRequest;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.widget.ListView;
@@ -10,7 +13,11 @@ import java.util.ArrayList;
 
 public class NumbersActivity extends AppCompatActivity {
 
+    /* Handles playback of all the sound files */
     private MediaPlayer mMediaPlayer;
+
+    /* Handles audio focus when playing a sound file */
+    private AudioManager mAudioManager;
 
     //This listener gets triggered when the mediaPlayer has completed playing the audio file.
     //This is created here instead of after audio start in order to avoid repeated object creation.
@@ -94,6 +101,7 @@ public class NumbersActivity extends AppCompatActivity {
         });
 
 
+
 //        //Setup counter variable to keep track of index position.
 //        for(int index = 0; index < words.size(); index ++) {
 //
@@ -104,5 +112,15 @@ public class NumbersActivity extends AppCompatActivity {
 //            rootView.addView(wordView);
 //
 //        }
+    }
+
+
+    /** onStop function of Activity lifecycle is called in order to release resources
+     *  after the user has exited the application
+     */
+    @Override
+    protected void onStop() {
+        super.onStop();
+        releaseMediaPlayer();
     }
 }
