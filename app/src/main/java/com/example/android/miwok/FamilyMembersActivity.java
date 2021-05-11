@@ -77,4 +77,13 @@ public class FamilyMembersActivity extends AppCompatActivity {
             mMediaPlayer.setOnCompletionListener(mCompletionListener);
         });
     }
+
+    /** onStop function of Activity lifecycle is called in order to release resources
+     *  after the user has exited the application
+     */
+    @Override
+    protected void onStop() {
+        super.onStop();
+        releaseMediaPlayer();
+    }
 }
