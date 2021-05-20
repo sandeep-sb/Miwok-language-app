@@ -1,7 +1,6 @@
 package com.example.android.miwok;
 
 import android.content.Context;
-import android.media.AudioFocusRequest;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -13,14 +12,40 @@ import java.util.ArrayList;
 
 public class NumbersActivity extends AppCompatActivity {
 
-    /* Handles playback of all the sound files */
+    /** Handles playback of all the sound files */
     private MediaPlayer mMediaPlayer;
 
-    /* Handles audio focus when playing a sound file */
+    /** Handles audio focus when playing a sound file */
     private AudioManager mAudioManager;
 
-    //This listener gets triggered when the mediaPlayer has completed playing the audio file.
-    //This is created here instead of after audio start in order to avoid repeated object creation.
+    /**
+     * This listener gets triggered whenever the audio focus changes
+     * (i.e., we gain or lose audio focus because of another app or device).
+     */
+    AudioManager.OnAudioFocusChangeListener mAudioFocusChange = new AudioManager.OnAudioFocusChangeListener() {
+        @Override
+        public void onAudioFocusChange(int focusChange) {
+            if (focusChange == AudioManager.AUDIOFOCUS_GAIN_TRANSIENT || focusChange == AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK){
+                // Pause playback and reset player to the start of the file. That way, we can
+                // play the word from the beginning when we resume playback.
+                mMediaPlayer.pause();
+                mMediaPlayer.seekTo(0);
+            }
+            else if(focusChange == AudioManager.AUDIOFOCUS_LOSS){
+                // The AUDIOFOCUS_LOSS case means we've lost audio focus and
+                // Stop playback and clean up resources
+                mMediaPlayer.stop();
+                releaseMediaPlayer();
+            }
+            else if(focusChange == AudioManager.AUDIOFOCUS_GAIN){
+                // The AUDIOFOCUS_GAIN case means we have regained focus and can resume playback.
+                mMediaPlayer.start();
+            }
+        }
+    };
+
+    /**This listener gets triggered when the mediaPlayer has completed playing the audio file.
+    *This is created here instead of after audio start in order to avoid repeated object creation.*/
     private final MediaPlayer.OnCompletionListener mCompletionListener = mediaPlayer -> releaseMediaPlayer();
 
     /**
@@ -37,6 +62,10 @@ public class NumbersActivity extends AppCompatActivity {
             // setting the media player to null is an easy way to tell that the media player
             // is not configured to play an audio file at the moment.
             mMediaPlayer = null;
+
+            // Regardless of whether or not we were granted audio focus, abandon it. This also
+            // unregisters the AudioFocusChangeListener so we don't get anymore callbacks.
+            mAudioManager.abandonAudioFocus(mAudioFocusChange);
         }
     }
 
@@ -44,6 +73,9 @@ public class NumbersActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.word_list);
+
+        //Requesting audioFocus just before playing audio file
+        mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
         final ArrayList<Word> words = new ArrayList<>();
 
@@ -70,6 +102,11 @@ public class NumbersActivity extends AppCompatActivity {
         words.add(new Word("na'aacha", "ten", R.drawable.number_ten, R.raw.audio_number_ten));
 
 
+        int result = mAudioManager.requestAudioFocus(mAudioFocusChange, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT);
+
+
+
+
 //        //Find the root view of the whole layout.
 //        LinearLayout rootView = (LinearLayout)findViewById(R.id.rootView);
 
@@ -92,12 +129,16 @@ public class NumbersActivity extends AppCompatActivity {
             //Create and setup the MediaPlayer for the audio resource associated with the current word
             mMediaPlayer = MediaPlayer.create(NumbersActivity.this, selectedWord.getSoundResourceID());
 
-            //Start the audio file
-            mMediaPlayer.start();
 
-            //Checking if MediaPlayer is still active by
-            //performing async callbacks to mMediaPlayer.
-            mMediaPlayer.setOnCompletionListener(mCompletionListener);
+            if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+
+                //Start the audio file
+                mMediaPlayer.start();
+
+                //Checking if MediaPlayer is still active by
+                //performing async callbacks to mMediaPlayer.
+                mMediaPlayer.setOnCompletionListener(mCompletionListener);
+            }
         });
 
 
